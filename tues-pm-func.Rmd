@@ -17,7 +17,26 @@ For the CHM, set values == 0 to NA (not trees)
 1. Export the plot figure to a pdf – publishable
 1. Export the classified raster as a geotiff with NaFlagg = -9999 to an outputs folder.
 
-```{r }
+```{r import-raster}
+library(raster)
+chm <- raster("../NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarCHM.tif")
+chm[chm==0] <- NA
+```
 
+```{r classify-raster}
+hist(chm)
+
+class.chm <- c(0,6,1,6.00000001,10,2,10.000000001,60,3)
+rcl.chm <- matrix(class.chm, ncol=3, byrow=TRUE)
+chm.ns <- reclassify(chm,rcl.chm)
+plot(chm.ns)
+hist(chm.ns)
+```
+
+```{r plot-chm}
+par(xpd=FALSE,mar=c(5.1,4.1,4.1,4.5))
+plot(chm.ns, col=c("brown","blue","green"),main="TEAK CHM",legend=FALSE)
+par(xpd=TRUE)
+legend((par()$usr[2]+20),410330,legend=c("Understory","Small","Tall"),fill=c("brown","blue","green"),bty="n")
 ```
 
