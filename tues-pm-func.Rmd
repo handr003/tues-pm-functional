@@ -56,7 +56,7 @@ dev.off()
 ```
 
 ```{r export-CHM-to-pdf}
-pdf(file="CHM reclassified",width=6,height=7)
+pdf(file="CHM reclassified.pdf",width=6,height=7)
 par(xpd=FALSE,mar=c(5.1,4.1,4.1,4.5))
 plot(chm.ns, col=c("brown","blue","green"),main="TEAK CHM",legend=FALSE)
 par(xpd=TRUE)
@@ -65,6 +65,13 @@ legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
        fill = c("brown", "blue","green"),
        bty="n") # turn off border
 dev.off()
+
+writeRaster(chm.ns,
+            filename="Teak_nsCHM.tif",
+            format="GTiff",
+            options="COMPRESS=LZW",
+            overwrite = TRUE,
+            NAflag = -9999)
 
 ```
 
