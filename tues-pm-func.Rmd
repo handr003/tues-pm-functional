@@ -50,7 +50,21 @@ legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
 
 ```{r export-density-to-pdf}
 pdf(file="TEAK_CHM_density_with_breaks.pdf",width=6,height=7)
-density(chm,main="fdsakltj")
+density(chm,main="CHM density with breaks")
 abline(v=rcl.chm[,2],col="red")
+dev.off()
+```
+
+```{r export-CHM-to-pdf}
+pdf(file="CHM reclassified",width=6,height=7)
+par(xpd=FALSE,mar=c(5.1,4.1,4.1,4.5))
+plot(chm.ns, col=c("brown","blue","green"),main="TEAK CHM",legend=FALSE)
+par(xpd=TRUE)
+legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
+       legend = c("Understory", "Small","Tall"),  # make sure the order matches the colors, next
+       fill = c("brown", "blue","green"),
+       bty="n") # turn off border
+dev.off()
+
 ```
 
