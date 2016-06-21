@@ -21,6 +21,7 @@ For the CHM, set values == 0 to NA (not trees)
 library(raster)
 chm <- raster("../NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarCHM.tif")
 chm[chm==0] <- NA
+chosen.breaks <- c(6,30,50,100)
 ```
 
 ```{r classify-raster}
@@ -29,6 +30,43 @@ density(chm)
 
 abline(v=6)
 abline(v=10)
+
+#function to create a reclassify matrix from set of breaks
+
+create_height_class_matrix <- function(breaks){
+  #get length of breaks vector to figure out number of classes
+  br_length <- length(breaks)
+  #initialize height class vector with zero
+  ht.class.m <- c(0)
+  #for input of breaks=6,30,50,100, we would like to make something like c(0,6,1,6,30,2,30,50,3,50,100,4)
+  for (i in 1:br_length){
+    ht.class.m <- c(ht.class.m, breaks[i-1], breaks[i], i)
+  }
+  reclass.height.m <- matrix(ht.class.m,ncol=3,byrow=TRUE)
+  reclass.height.m
+}
+create_height_class_matrix(c(6,30,50,100))
+
+# function to plot density of heights with chosen breaks, expects a CHM raster, title, vector of breaks
+plot_chm_density <- function(rast.in,title,bins){
+  density(rast.in, main=title,xlab="Height(m)")
+  abline(v=bins,col="red")
+}
+
+plot_chm_density(rast.in=chm,title="Canopy heights at Teakettle", bins=chosen.breaks)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class.chm <- c(0,6,1,6.00000001,10,2,10.000000001,60,3)
 rcl.chm <- matrix(class.chm, ncol=3, byrow=TRUE)
